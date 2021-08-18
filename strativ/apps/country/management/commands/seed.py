@@ -11,6 +11,10 @@ base_url = 'https://restcountries.eu/rest/v2/all'
 def add_countries():
     response = requests.get(base_url)
 
+    # Error Handler
+    if response.status_code != 200:
+        return 0
+
     countries_data = response.json()
 
     for data in countries_data:
@@ -40,4 +44,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # clear_data()
         total_countries = add_countries()
-        print(f"Successfully added, {total_countries}.")
+        print(f"Successfully added, {total_countries} data.")
