@@ -21,6 +21,7 @@ def add_countries():
         country = Country(
             name=data['name'],
             alpha_code2=data['alpha2Code'],
+            alpha_code3=data['alpha3Code'],
             capital=data['capital'],
             population=data['population'],
             neighbouring_countries=data['borders'],

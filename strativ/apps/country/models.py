@@ -6,7 +6,8 @@ from django.db import models
 class Country(models.Model):
 
     name = models.CharField(max_length=120)
-    alpha_code2 = models.CharField(max_length=10)
+    alpha_code2 = models.CharField(max_length=20)
+    alpha_code3 = models.CharField(max_length=20, unique=True)
     capital = models.CharField(max_length=100)
     population = models.CharField(max_length=100)
     timezones = models.JSONField()
