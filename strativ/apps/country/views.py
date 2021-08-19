@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -27,16 +27,27 @@ class CountryRetrieveUpdateDestroyApiView(RetrieveUpdateDestroyAPIView):
 
 def home(request):
     countries = Country.objects.all()
-    # Filtering search button
-    myFilter = CountryFilter(request.GET, queryset=countries)
-    # page = request.GET.get('page',1)
-    #
-    # paginator = Paginator(country_list, 10)
-    # try:
-    #     countries = paginator.page(page)
-    # except PageNotAnInteger:
-    #     countries = paginator.page(1)
-    # except EmptyPage:
-    #     countries = paginator.page(paginator.num_pages)
-    context= { 'countries': countries, 'myFilter': myFilter}
+    context = {'countries': countries}
     return render(request, 'country/home.html', context)
+
+
+def get_country_by_name(request):
+    search_key = request.GET['value']
+    countries = Country.objects.filter(name__startswith=search_key)
+    context = {'countries': countries}
+    return render(request, 'country/home.html', context)
+
+
+# def details_p(request):
+def country_details(request, pk):
+
+    country = Country.objects.get(id=pk)
+    neighbouring_countries = []
+    # find the neighbouring countries name
+    for alphacode3 in country.neighbouring_countries:
+        cur_country = Country.objects.filter(alpha_code3=alphacode3).values('name', 'languages').first()
+        neighbouring_countries.append(cur_country)
+
+    context = { 'country': country, 'neighbours': neighbouring_countries }
+
+    return render(request, 'country/details.html', context)

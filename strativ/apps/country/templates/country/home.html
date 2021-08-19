@@ -14,8 +14,8 @@
        <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light ">
             <div class="container-fluid justify-content-center">
-                <form class="d-flex ">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="d-flex " action="{% url 'search_country' %}" method="get">
+                    <input class="form-control me-2" name="value" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
@@ -36,12 +36,16 @@
                 </tr>
             </thead>
             <tbody>
+
             {% for country in countries %}
+
 
                 <tr>
                     <th scope="row">{{ country.id }}</th>
                     <td>
-                        <button type="button" class="btn btn-primary">{{ country.name }}</button>
+                        {{ country.name }}
+<!--                        <button type="button"  class="btn btn-primary">{{ country.name }}</button>-->
+
                     </td>
                     <td>{{ country.alpha_code2 }}</td>
                     <td>{{ country.capital }}</td>
@@ -54,6 +58,15 @@
                     <td class="flagTd">
                         <img src="{{ country.flag }}" alt="flag">
                     </td>
+                    <td>
+<!--                        <a href="{% url 'country_details' country.id %}>-->
+<!--                            <button type="button"  class="btn btn-primary"> Details </button>-->
+<!--                        </a>-->
+                        <a class="btn btn-sm btn-info" href="{% url 'country_details' country.id %}">Details</a>
+                    </td>
+
+
+
                 </tr>
             {% endfor %}
              </tbody>
