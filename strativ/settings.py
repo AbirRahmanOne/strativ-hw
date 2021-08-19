@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'strativ.apps.country',
 
     'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
