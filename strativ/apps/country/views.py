@@ -31,9 +31,8 @@ def home(request):
     return render(request, 'country/home.html', context)
 
 
-def get_country_name(request):
+def get_country_by_name(request):
     search_key = request.GET['value']
-    print(search_key)
     countries = Country.objects.filter(name__startswith=search_key)
     context = {'countries': countries}
     return render(request, 'country/home.html', context)
