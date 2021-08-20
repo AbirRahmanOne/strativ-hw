@@ -2,6 +2,8 @@ from django.urls  import path
 
 from strativ.apps.country.views import CountryListApiView, CountryRetrieveUpdateDestroyApiView
 from . import views
+
+
 # Api routes
 urlpatterns = [
 

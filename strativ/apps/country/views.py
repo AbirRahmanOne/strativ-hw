@@ -1,6 +1,7 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from django_filters.rest_framework import DjangoFilterBackend
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
@@ -18,11 +19,13 @@ class CountryListApiView(ListCreateAPIView):
     queryset = Country.objects.all()
     filter_backends = [DjangoFilterBackend]
     filter_class = CountryFilter
+    permission_classes = [IsAuthenticated]
 
 
 class CountryRetrieveUpdateDestroyApiView(RetrieveUpdateDestroyAPIView):
     serializer_class = CountrySerializer
     queryset = Country.objects.all()
+    permission_classes = [IsAuthenticated]
 
 
 def home(request):
@@ -38,7 +41,6 @@ def get_country_by_name(request):
     return render(request, 'country/home.html', context)
 
 
-# def details_p(request):
 def country_details(request, pk):
 
     country = Country.objects.get(id=pk)
@@ -51,3 +53,7 @@ def country_details(request, pk):
     context = { 'country': country, 'neighbours': neighbouring_countries }
 
     return render(request, 'country/details.html', context)
+
+
+def login(request):
+    pass
