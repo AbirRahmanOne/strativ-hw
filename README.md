@@ -1,4 +1,4 @@
-# strativ-hm
+# strativ
 * Python Developer Assignment [Strativ]
 
 ## Project Run Instructions:
