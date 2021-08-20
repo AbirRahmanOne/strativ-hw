@@ -11,6 +11,10 @@ base_url = 'https://restcountries.eu/rest/v2/all'
 def add_countries():
     response = requests.get(base_url)
 
+    #Data already added
+    if Country.objects.count():
+        return 0
+
     # Error Handler
     if response.status_code != 200:
         return 0
