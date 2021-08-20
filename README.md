@@ -12,6 +12,7 @@
 ### Adding Countries Instructions:
 * Open Terminal
 * Go to project directory
+* Type `python manage.py migrate`
 * Type `python manage.py seed`
 
 ### Project Run Instructions:
