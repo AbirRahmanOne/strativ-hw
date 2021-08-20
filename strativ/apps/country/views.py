@@ -1,6 +1,8 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponse, redirect
 from django_filters.rest_framework import DjangoFilterBackend
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
@@ -9,6 +11,9 @@ from strativ.apps.country.models import Country
 from strativ.apps.country.serializers import CountrySerializer
 
 from strativ.apps.country.filters import CountryFilter
+
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 
 # Create your views here.
@@ -28,12 +33,14 @@ class CountryRetrieveUpdateDestroyApiView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
 
+@login_required(login_url='login')
 def home(request):
     countries = Country.objects.all()
     context = {'countries': countries}
     return render(request, 'country/home.html', context)
 
 
+@login_required(login_url='login')
 def get_country_by_name(request):
     search_key = request.GET['value']
     countries = Country.objects.filter(name__startswith=search_key)
@@ -41,6 +48,7 @@ def get_country_by_name(request):
     return render(request, 'country/home.html', context)
 
 
+@login_required(login_url='login')
 def country_details(request, pk):
 
     country = Country.objects.get(id=pk)
@@ -55,5 +63,21 @@ def country_details(request, pk):
     return render(request, 'country/details.html', context)
 
 
-def login(request):
-    pass
+def login_page(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    else:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                messages.warning(request, "Incorrect User")
+
+    context = {}
+    return render(request, 'country/login.html', context)

@@ -8,6 +8,8 @@ from . import views
 urlpatterns = [
 
     #Html view route
+    path('login', views.login_page, name='login'),
+
     path('', views.home, name='home'),
     path('country_search', views.get_country_by_name, name='search_country'),
     path('country_details/<int:pk>', views.country_details, name='country_details'),
